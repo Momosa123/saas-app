@@ -45,3 +45,7 @@ next-env.d.ts
 
 # Sentry Config File
 .env.sentry-build-plugin
+database/disable-rls.sql
+database/enable-rls.sql
+DEVELOPMENT_PLAN.md
+EVOLUTION.md
