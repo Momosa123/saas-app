@@ -49,3 +49,4 @@ database/disable-rls.sql
 database/enable-rls.sql
 DEVELOPMENT_PLAN.md
 EVOLUTION.md
+database/create-companions-table.sql

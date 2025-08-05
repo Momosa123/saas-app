@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { subjectsColors, voices } from "@/constants";
+import { subjectsColors } from "@/constants";
 import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
 import { getEnglishTutor, type TutorType } from "./english-tutors";
 
@@ -23,10 +23,7 @@ export const configureEnglishTutor = (
 ) => {
   const tutorConfig = getEnglishTutor(tutorType);
 
-  const voiceId =
-    voices[voice as keyof typeof voices][
-      style as keyof (typeof voices)[keyof typeof voices]
-    ] || "sarah";
+  const voiceId = voice || "nova";
 
   const vapiAssistant: CreateAssistantDTO = {
     name: tutorConfig.name,
@@ -37,18 +34,14 @@ export const configureEnglishTutor = (
       language: "en",
     },
     voice: {
-      provider: "11labs",
+      provider: "openai",
       voiceId: voiceId,
-      stability: 0.4,
-      similarityBoost: 0.8,
       speed:
         tutorConfig.voiceStyle === "energetic"
           ? 1.1
           : tutorConfig.voiceStyle === "patient"
           ? 0.9
           : 1,
-      style: 0.5,
-      useSpeakerBoost: true,
     },
     model: {
       provider: "openai",
@@ -70,11 +63,8 @@ export const configureEnglishTutor = (
 // =============================================================================
 // CONFIGURATION ASSISTANT - VERSION ORIGINALE (GARDÉE POUR COMPATIBILITÉ)
 // =============================================================================
-export const configureAssistant = (voice: string, style: string) => {
-  const voiceId =
-    voices[voice as keyof typeof voices][
-      style as keyof (typeof voices)[keyof typeof voices]
-    ] || "sarah";
+export const configureAssistant = (voice: string) => {
+  const voiceId = voice || "nova";
 
   const vapiAssistant: CreateAssistantDTO = {
     name: "Companion",
@@ -86,13 +76,9 @@ export const configureAssistant = (voice: string, style: string) => {
       language: "en",
     },
     voice: {
-      provider: "11labs",
+      provider: "openai",
       voiceId: voiceId,
-      stability: 0.4,
-      similarityBoost: 0.8,
       speed: 1,
-      style: 0.5,
-      useSpeakerBoost: true,
     },
     model: {
       provider: "openai",
@@ -130,7 +116,7 @@ export const configureTutor = (
   topic: string
 ) => {
   if (tutorType === "legacy") {
-    return configureAssistant(voice, style);
+    return configureAssistant(voice);
   }
 
   return configureEnglishTutor(tutorType, voice, style, topic);
